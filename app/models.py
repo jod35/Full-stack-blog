@@ -16,11 +16,10 @@ class User(db.Model):
     comments=db.relationship(
         'Comment',backref='author',lazy=True
     )
-    def __init__(self,username,email,password,date_joined):
+    def __init__(self,username,email,password):
         self.username=username
         self.email=email
         self.password=password
-        self.date_joined=date_joined
 
     def __repr__(self):
         return f"< User {self.username}>"
@@ -34,7 +33,7 @@ class User(db.Model):
         db.session.commit()
 
     @classmethod
-    def get_by_id(cls):
+    def get_by_id(cls,id):
         return cls.query.get_or_404(id)
 
     @classmethod
@@ -60,10 +59,9 @@ class Post(db.Model):
         backref='post',lazy=True
     )
 
-    def __init__(self,title,body,date_added):
+    def __init__(self,title,body):
         self.title=title
         self.body=body
-        self.date_added=date_added
 
 
     def __repr__(self):
@@ -78,7 +76,7 @@ class Post(db.Model):
         db.session.commit()
 
     @classmethod
-    def get_by_id(cls):
+    def get_by_id(cls,id):
         return cls.query.get_or_404(id)
 
     @classmethod
@@ -100,9 +98,8 @@ class Comment(db.Model):
     user_id=db.Column(db.Integer,db.ForeignKey('users.id'))
     post_id=db.Column(db.Integer,db.ForeignKey('posts.id'))
 
-    def __init__(self,body,date_added):
+    def __init__(self,body):
         self.body=body
-        self.date_added=date_added
 
 
     def __repr__(self):
@@ -117,7 +114,7 @@ class Comment(db.Model):
         db.session.commit()
 
     @classmethod
-    def get_by_id(cls):
+    def get_by_id(cls,id):
         return cls.query.get_or_404(id)
 
     @classmethod
