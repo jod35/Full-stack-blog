@@ -75,7 +75,7 @@ class Users(Resource):
 @api.route('/user/<int:id>')
 class UserResource(Resource):
 
-    @api.marshal_with(user_model)
+    @api.marshal_with(user_model,envelope='user')
    
     def get(self,id):
         ''' Get a user by ID'''
@@ -83,7 +83,7 @@ class UserResource(Resource):
 
         return user
 
-    @api.marshal_with(user_model)
+    @api.marshal_with(user_model,envelope='user')
     @api.expect(user_model)
     def put(self,id):
         ''' Update all user info '''
@@ -94,13 +94,13 @@ class UserResource(Resource):
 
         user.username=data.get('username')
 
-        user.email=date.get('email')
+        user.email=data.get('email')
 
         db.session.commit()
 
         return user
 
-    @api.marshal_with(user_model)
+    @api.marshal_with(user_model,envelope='user')
     def delete(self,id):
         ''' Delete a user with ID '''
         user=User.get_by_id(id)
@@ -142,7 +142,7 @@ class Posts(Resource):
 
 @api.route('/post/<int:id>')
 class PostResource(Resource):
-    @api.marshal_with(post_model)
+    @api.marshal_with(post_model,envelope='post')
     def get(self,id):
         '''Get a post by ID '''
         post=Post.get_by_id(id)
@@ -150,7 +150,7 @@ class PostResource(Resource):
         return post
 
     
-    @api.marshal_with(post_model)
+    @api.marshal_with(post_model,envelope='post')
     @api.expect(post_model)
     def put(self,id):
         '''Update a post with an ID '''
@@ -166,7 +166,7 @@ class PostResource(Resource):
 
         return post
 
-    @api.marshal_with(post_model)
+    @api.marshal_with(post_model,envelope='post')
     def delete(self,id):
         post=Post.get_by_id(id)
 
@@ -178,14 +178,14 @@ class PostResource(Resource):
 @api.route('/comments')
 class Comments(Resource):
 
-    @api.marshal_with(comment_model)
+    @api.marshal_with(comment_model,envelope='comments')
     def get(self):
         ''' Get all comments '''
         comments=Comment.get_all()
 
         return comments
 
-    @api.marshal_with(comment_model)
+    @api.marshal_with(comment_model,envelope='comment')
     @api.expect(comment_model)
     def post(self):
         ''' Create a new comment '''
@@ -204,14 +204,14 @@ class Comments(Resource):
 @api.route('/comment/<int:id>')
 class CommentResource(Resource):
 
-    @api.marshal_with(comment_model)
+    @api.marshal_with(comment_model,envelope='comment')
     def get(self,id):
         '''Get a comment with an ID '''
         comment=Comment.get_by_id(id)
 
         return comment
     
-    @api.marshal_with(comment_model)
+    @api.marshal_with(comment_model,envelope='comment')
     def put(self):
         ''' Update a comment with an ID'''
         comment=Comment.get_by_id(id)
@@ -225,7 +225,7 @@ class CommentResource(Resource):
         return comment
 
     
-    @api.marshal_with(comment_model)
+    @api.marshal_with(comment_model,envelope='comment')
     def delete(self):
         comment=Comment.get_by_id(id)
 
